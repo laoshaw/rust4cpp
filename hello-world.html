@@ -1,0 +1,342 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>hello world - Rust for CPP Programmers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="hello-world.html" class="active"><strong aria-hidden="true">1.</strong> hello world</a></li><li class="chapter-item expanded "><a href="control-flow.html"><strong aria-hidden="true">2.</strong> control flow</a></li><li class="chapter-item expanded "><a href="primitives.html"><strong aria-hidden="true">3.</strong> primitive types</a></li><li class="chapter-item expanded "><a href="unique.html"><strong aria-hidden="true">4.</strong> unique pointers</a></li><li class="chapter-item expanded "><a href="borrowed.html"><strong aria-hidden="true">5.</strong> borrowed pointers</a></li><li class="chapter-item expanded "><a href="rc-raw.html"><strong aria-hidden="true">6.</strong> rc and raw pointers</a></li><li class="chapter-item expanded "><a href="data-types.html"><strong aria-hidden="true">7.</strong> data types</a></li><li class="chapter-item expanded "><a href="destructuring.html"><strong aria-hidden="true">8.</strong> destructuring 1</a></li><li class="chapter-item expanded "><a href="destructuring-2.html"><strong aria-hidden="true">9.</strong> destructuring 2</a></li><li class="chapter-item expanded "><a href="arrays.html"><strong aria-hidden="true">10.</strong> arrays and vecs</a></li><li class="chapter-item expanded "><a href="graphs/index.html"><strong aria-hidden="true">11.</strong> graphs and arena_allocation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="graphs/src/mod.rs.html"><strong aria-hidden="true">11.1.</strong> mod</a></li><li class="chapter-item expanded "><a href="graphs/src/rc_graph.rs.html"><strong aria-hidden="true">11.2.</strong> rc_graph</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph_generic_mod.rs.html"><strong aria-hidden="true">11.3.</strong> ref_graph_generic_mod</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph.rs.html"><strong aria-hidden="true">11.4.</strong> ref_graph</a></li></ol></li><li class="chapter-item expanded "><a href="closures.html"><strong aria-hidden="true">12.</strong> closures and first-class functions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust for CPP Programmers</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction---hello-world"><a class="header" href="#introduction---hello-world">Introduction - hello world!</a></h1>
+<p>If you are using C or C++, it is probably because you have to - either you need
+low-level access to the system, or need every last drop of performance, or both.
+Rust aims to offer the same level of abstraction around memory, the same
+performance, but be safer and make you more productive.</p>
+<p>Concretely, there are many languages out there that you might prefer to use to
+C++: Java, Scala, Haskell, Python, and so forth, but you can't because either
+the level of abstraction is too high (you don't get direct access to memory,
+you are forced to use garbage collection, etc.), or there are performance issues
+(either performance is unpredictable or it's simply not fast enough). Rust does
+not force you to use garbage collection, and as in C++, you get raw pointers to
+memory to play with. Rust subscribes to the 'pay for what you use' philosophy of
+C++. If you don't use a feature, then you don't pay any performance overhead for
+its existence. Furthermore, all language features in Rust have a predictable (and
+usually small) cost.</p>
+<p>Whilst these constraints make Rust a (rare) viable alternative to C++, Rust also
+has benefits: it is memory safe - Rust's type system ensures that you don't get
+the kind of memory errors which are common in C++ - accessing un-initialised
+memory, and dangling pointers - all are impossible in Rust. Furthermore,
+whenever other constraints allow, Rust strives to prevent other safety issues
+too - for example, all array indexing is bounds checked (of course, if you want
+to avoid the cost, you can (at the expense of safety) - Rust allows you to do
+this in unsafe blocks, along with many other unsafe things. Crucially, Rust
+ensures that unsafety in unsafe blocks stays in unsafe blocks and can't affect
+the rest of your program). Finally, Rust takes many concepts from modern
+programming languages and introduces them to the systems language space.
+Hopefully, that makes programming in Rust more productive, efficient, and
+enjoyable.</p>
+<p>In the rest of this section we'll download and install Rust, create a minimal
+Cargo project, and implement Hello World.</p>
+<h2 id="getting-rust"><a class="header" href="#getting-rust">Getting Rust</a></h2>
+<p>You can get Rust from <a href="http://www.rust-lang.org/install.html">http://www.rust-lang.org/install.html</a>.
+The downloads from there include the Rust compiler, standard libraries, and
+Cargo, which is a package manager and build tool for Rust.</p>
+<p>Rust is available on three channels: stable, beta, and nightly. Rust works on a
+rapid-release, schedule with new releases every six weeks. On the release date,
+nightly becomes beta and beta becomes stable.</p>
+<p>Nightly is updated every night and is ideal for users who want to experiment with
+cutting edge features and ensure that their libraries will work with future Rust.</p>
+<p>Stable is the right choice for most users. Rust's stability guarantees only
+apply to the stable channel.</p>
+<p>Beta is designed to mostly be used in users' CI to check that their code will
+continue to work as expected.</p>
+<p>So, you probably want the stable channel. If you're on Linux or OS X, the
+easiest way to get it is to run</p>
+<pre><code>curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+</code></pre>
+<p>On Windows, a similarly easy way would be to run</p>
+<pre><code>choco install rust
+</code></pre>
+<p>For other ways to install, see <a href="http://www.rust-lang.org/install.html">http://www.rust-lang.org/install.html</a>.</p>
+<p>You can find the source at <a href="https://github.com/rust-lang/rust">github.com/rust-lang/rust</a>.
+To build the compiler, run <code>./configure &amp;&amp; make rustc</code>. See
+<a href="https://github.com/rust-lang/rust#building-from-source">building-from-source</a>
+for more detailed instructions.</p>
+<h2 id="hello-world"><a class="header" href="#hello-world">Hello World!</a></h2>
+<p>The easiest and most common way to build Rust programs is to use Cargo. To start
+a project called <code>hello</code> using Cargo, run <code>cargo new --bin hello</code>. This will
+create a new directory called <code>hello</code> inside which is a <code>Cargo.toml</code> file and
+a <code>src</code> directory with a file called <code>main.rs</code>.</p>
+<p><code>Cargo.toml</code> defines dependencies and other metadata about our project. We'll
+come back to it in detail later.</p>
+<p>All our source code will go in the <code>src</code> directory. <code>main.rs</code> already contains
+a Hello World program. It looks like this:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    println!(&quot;Hello, world!&quot;);
+}
+</code></pre></pre>
+<p>To build the program, run <code>cargo build</code>. To build and run it, <code>cargo run</code>. If
+you do the latter, you should be greeted in the console. Success!</p>
+<p>Cargo will have made a <code>target</code> directory and put the executable in there.</p>
+<p>If you want to use the compiler directly you can run <code>rustc src/hello.rs</code> which
+will create an executable called <code>hello</code>. See <code>rustc --help</code> for lots of
+options.</p>
+<p>OK, back to the code. A few interesting points - we use <code>fn</code> to define a
+function or method. <code>main()</code> is the default entry point for our programs (we'll
+leave program args for later). There are no separate declarations or header
+files as with C++. <code>println!</code> is Rust's equivalent of printf. The <code>!</code> means that
+it is a macro. A subset of the standard library is available without needing to
+be explicitly imported/included (the prelude). The <code>println!</code> macro is included
+as part of that subset.</p>
+<p>Lets change our example a little bit:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let world = &quot;world&quot;;
+    println!(&quot;Hello {}!&quot;, world);
+}
+</code></pre></pre>
+<p><code>let</code> is used to introduce a variable, world is the variable name and it is a
+string (technically the type is <code>&amp;'static str</code>, but more on that later). We
+don't need to specify the type, it will be inferred for us.</p>
+<p>Using <code>{}</code> in the <code>println!</code> statement is like using <code>%s</code> in printf. In fact, it
+is a bit more general than that because Rust will try to convert the variable to
+a string if it is not one already<sup><a href="#1">1</a></sup> (like <code>operator&lt;&lt;()</code> in C++).
+You can easily play around with this sort of thing - try multiple strings and
+using numbers (integer and float literals will work).</p>
+<p>If you like, you can explicitly give the type of <code>world</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let world: &amp;'static str = &quot;world&quot;;
+<span class="boring">}
+</span></code></pre></pre>
+<p>In C++ we write <code>T x</code> to declare a variable <code>x</code> with type <code>T</code>. In Rust we write
+<code>x: T</code>, whether in <code>let</code> statements or function signatures, etc. Mostly we omit
+explicit types in <code>let</code> statements, but they are required for function
+arguments. Lets add another function to see it work:</p>
+<pre><pre class="playground"><code class="language-rust">fn foo(_x: &amp;'static str) -&gt; &amp;'static str {
+    &quot;world&quot;
+}
+
+fn main() {
+    println!(&quot;Hello {}!&quot;, foo(&quot;bar&quot;));
+}
+</code></pre></pre>
+<p>The function <code>foo</code> has a single argument <code>_x</code> which is a string literal (we pass
+it &quot;bar&quot; from <code>main</code>)<sup><a href="#2">2</a></sup>.</p>
+<p>The return type for a function is given after <code>-&gt;</code>. If the function doesn't
+return anything (a void function in C++), we don't need to give a return type at
+all (as in <code>main</code>). If you want to be super-explicit, you can write <code>-&gt; ()</code>,
+<code>()</code> is the void type in Rust.</p>
+<p>You don't need the <code>return</code> keyword in Rust, if the last expression in a
+function body (or any other block, we'll see more of this later) is not finished
+with a semicolon, then it is the return value. So <code>foo</code> will return
+&quot;world&quot;. The <code>return</code> keyword still exists so we can do early returns. You can
+replace <code>&quot;world&quot;</code> with <code>return &quot;world&quot;;</code> and it will have the same effect.</p>
+<h2 id="why"><a class="header" href="#why">Why?</a></h2>
+<p>I would like to motivate some of the language features above. Local type
+inference is convenient and useful without sacrificing safety or performance
+(it's even in modern versions of C++ now). A minor convenience is that language
+items are consistently denoted by keyword (<code>fn</code>, <code>let</code>, etc.), this makes
+scanning by eye or by tools easier, in general the syntax of Rust is simpler and
+more consistent than C++. The <code>println!</code> macro is safer than printf - the number
+of arguments is statically checked against the number of 'holes' in the string
+and the arguments are type checked. This means you can't make the printf
+mistakes of printing memory as if it had a different type or addressing memory
+further down the stack by mistake. These are fairly minor things, but I hope
+they illustrate the philosophy behind the design of Rust.</p>
+<h5 id="1"><a class="header" href="#1">1</a></h5>
+<p>This is a programmer specified conversion which uses the <code>Display</code> trait, which
+works a bit like <code>toString</code> in Java. You can also use <code>{:?}</code> which gives a
+compiler generated representation which is sometimes useful for debugging. As
+with printf, there are many other options.</p>
+<h5 id="2"><a class="header" href="#2">2</a></h5>
+<p>We don't actually use that argument in <code>foo</code>. Usually,
+Rust will warn us about this. By prefixing the argument name with <code>_</code> we avoid
+these warnings. In fact, we don't need to name the argument at all, we could
+just use <code>_</code>.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="control-flow.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="control-flow.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>graphs and arena_allocation - Rust for CPP Programmers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded "><a href="../hello-world.html"><strong aria-hidden="true">1.</strong> hello world</a></li><li class="chapter-item expanded "><a href="../control-flow.html"><strong aria-hidden="true">2.</strong> control flow</a></li><li class="chapter-item expanded "><a href="../primitives.html"><strong aria-hidden="true">3.</strong> primitive types</a></li><li class="chapter-item expanded "><a href="../unique.html"><strong aria-hidden="true">4.</strong> unique pointers</a></li><li class="chapter-item expanded "><a href="../borrowed.html"><strong aria-hidden="true">5.</strong> borrowed pointers</a></li><li class="chapter-item expanded "><a href="../rc-raw.html"><strong aria-hidden="true">6.</strong> rc and raw pointers</a></li><li class="chapter-item expanded "><a href="../data-types.html"><strong aria-hidden="true">7.</strong> data types</a></li><li class="chapter-item expanded "><a href="../destructuring.html"><strong aria-hidden="true">8.</strong> destructuring 1</a></li><li class="chapter-item expanded "><a href="../destructuring-2.html"><strong aria-hidden="true">9.</strong> destructuring 2</a></li><li class="chapter-item expanded "><a href="../arrays.html"><strong aria-hidden="true">10.</strong> arrays and vecs</a></li><li class="chapter-item expanded "><a href="../graphs/index.html" class="active"><strong aria-hidden="true">11.</strong> graphs and arena_allocation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../graphs/src/mod.rs.html"><strong aria-hidden="true">11.1.</strong> mod</a></li><li class="chapter-item expanded "><a href="../graphs/src/rc_graph.rs.html"><strong aria-hidden="true">11.2.</strong> rc_graph</a></li><li class="chapter-item expanded "><a href="../graphs/src/ref_graph_generic_mod.rs.html"><strong aria-hidden="true">11.3.</strong> ref_graph_generic_mod</a></li><li class="chapter-item expanded "><a href="../graphs/src/ref_graph.rs.html"><strong aria-hidden="true">11.4.</strong> ref_graph</a></li></ol></li><li class="chapter-item expanded "><a href="../closures.html"><strong aria-hidden="true">12.</strong> closures and first-class functions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust for CPP Programmers</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="graphs-and-arena-allocation"><a class="header" href="#graphs-and-arena-allocation">Graphs and arena allocation</a></h1>
+<p>(Note you can run the examples in this chapter by downloading this directory and
+running <code>cargo run</code>).</p>
+<p>Graphs are a bit awkward to construct in Rust because of Rust's stringent
+lifetime and mutability requirements. Graphs of objects are very common in OO
+programming. In this tutorial I'm going to go over a few different approaches to
+implementation. My preferred approach uses arena allocation and makes slightly
+advanced use of explicit lifetimes. I'll finish up by discussing a few potential
+Rust features which would make using such an approach easier.</p>
+<p>A <a href="http://en.wikipedia.org/wiki/Graph_%28abstract_data_type%29">graph</a> is a
+collection of nodes with edges between some of those nodes. Graphs are a
+generalisation of lists and trees. Each node can have multiple children and
+multiple parents (we usually talk about edges into and out of a node, rather
+than parents/children). Graphs can be represented by adjacency lists or
+adjacency matrices. The former is basically a node object for each node in the
+graph, where each node object keeps a list of its adjacent nodes. An adjacency
+matrix is a matrix of booleans indicating whether there is an edge from the row
+node to the column node. We'll only cover the adjacency list representation,
+adjacency matrices have very different issues which are less Rust-specific.</p>
+<p>There are essentially two orthogonal problems: how to handle the lifetime of the
+graph and how to handle it's mutability.</p>
+<p>The first problem essentially boils down to what kind of pointer to use to point
+to other nodes in the graph. Since graph-like data structures are recursive (the
+types are recursive, even if the data is not) we are forced to use pointers of
+some kind rather than have a totally value-based structure. Since graphs can be
+cyclic, and ownership in Rust cannot be cyclic, we cannot use <code>Box&lt;Node&gt;</code> as our
+pointer type (as we might do for tree-like data structures or linked lists).</p>
+<p>No graph is truly immutable. Because there may be cycles, the graph cannot be
+created in a single statement. Thus, at the very least, the graph must be mutable
+during its initialisation phase. The usual invariant in Rust is that all
+pointers must either be unique or immutable. Graph edges must be mutable (at
+least during initialisation) and there can be more than one edge into any node,
+thus no edges are guaranteed to be unique. So we're going to have to do
+something a little bit advanced to handle mutability.</p>
+<p>One solution is to use mutable raw pointers (<code>*mut Node</code>). This is the most
+flexible approach, but also the most dangerous. You must handle all the lifetime
+management yourself without any help from the type system. You can make very
+flexible and efficient data structures this way, but you must be very careful.
+This approach handles both the lifetime and mutability issues in one fell swoop.
+But it handles them by essentially ignoring all the benefits of Rust - you will
+get no help from the compiler here (it's also not particularly ergonomic since
+raw pointers don't automatically (de-)reference). Since a graph using raw
+pointers is not much different from a graph in C++, I'm not going to cover that
+option here.</p>
+<p>The options you have for lifetime management are reference counting (shared
+ownership, using <code>Rc&lt;...&gt;</code>) or arena allocation (all nodes have the same lifetime,
+managed by an arena; using borrowed references <code>&amp;...</code>). The former is
+more flexible (you can have references from outside the graph to individual
+nodes with any lifetime), the latter is better in every other way.</p>
+<p>For managing mutability, you can either use <code>RefCell</code>, i.e., make use of Rust's
+facility for dynamic, interior mutability, or you can manage the mutability
+yourself (in this case you have to use <code>UnsafeCell</code> to communicate the interior
+mutability to the compiler). The former is safer, the latter is more efficient.
+Neither is particularly ergonomic.</p>
+<p>Note that if your graph might have cycles, then if you use <code>Rc</code>, further action
+is required to break the cycles and not leak memory. Since Rust has no cycle
+collection of <code>Rc</code> pointers, if there is a cycle in your graph, the ref counts
+will never fall to zero, and the graph will never be deallocated. You can solve
+this by using <code>Weak</code> pointers in your graph or by manually breaking cycles when
+you know the graph should be destroyed. The former is more reliable. We don't
+cover either here, in our examples we just leak memory. The approach using
+borrowed references and arena allocation does not have this issue and is thus
+superior in that respect.</p>
+<p>To compare the different approaches I'll use a pretty simple example. We'll just
+have a <code>Node</code> object to represent a node in the graph, this will hold some
+string data (representative of some more complex data payload) and a <code>Vec</code> of
+adjacent nodes (<code>edges</code>). We'll have an <code>init</code> function to create a simple graph
+of nodes, and a <code>traverse</code> function which does a pre-order, depth-first
+traversal of the graph. We'll use this to print the payload of each node in the
+graph. Finally, we'll have a <code>Node::first</code> method which returns a reference to
+the first adjacent node to the <code>self</code> node and a function <code>foo</code> which prints the
+payload of an individual node. These functions stand in for more complex
+operations involving manipulation of a node interior to the graph.</p>
+<p>To try and be as informative as possible without boring you, I'll cover two
+combinations of possibilities: ref counting and <code>RefCell</code>, and arena allocation
+and <code>UnsafeCell</code>. I'll leave the other two combinations as an exercise.</p>
+<h2 id="rcrefcellnode"><a class="header" href="#rcrefcellnode"><code>Rc&lt;RefCell&lt;Node&gt;&gt;</code></a></h2>
+<p>See <a href="src/rc_graph.rs.html">full example</a>.</p>
+<p>This is the safer option because there is no unsafe code. It is also the least
+efficient and least ergonomic option. It is pretty flexible though, nodes of the
+graph can be easily reused outside the graph since they are ref-counted. I would
+recommend this approach if you need a fully mutable graph, or need your nodes to
+exist independently of the graph.</p>
+<p>The node structure looks like</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Node {
+    datum: &amp;'static str,
+    edges: Vec&lt;Rc&lt;RefCell&lt;Node&gt;&gt;&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Creating a new node is not too bad: <code>Rc::new(RefCell::new(Node { ... }))</code>. To
+add an edge during initialisation, you have to borrow the start node as mutable,
+and clone the end node into the Vec of edges (this clones the pointer,
+incrementing the reference count, not the actual node). E.g.,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let mut mut_root = root.borrow_mut();
+mut_root.edges.push(b.clone());
+<span class="boring">}
+</span></code></pre></pre>
+<p>The <code>RefCell</code> dynamically ensures that we are not already reading or writing the
+node when we write it.</p>
+<p>Whenever you access a node, you have to use <code>.borrow()</code> to borrow the <code>RefCell</code>.
+Our <code>first</code> method has to return a ref-counted pointer, rather than a borrowed
+reference, so callers of <code>first</code> also have to borrow:</p>
+<pre><pre class="playground"><code class="language-rust">fn first(&amp;self) -&gt; Rc&lt;RefCell&lt;Node&gt;&gt; {
+    self.edges[0].clone()
+}
+
+pub fn main() {
+    let g = ...;
+    let f = g.first();
+    foo(&amp;*f.borrow());
+}
+</code></pre></pre>
+<h2 id="node-and-unsafecell"><a class="header" href="#node-and-unsafecell"><code>&amp;Node</code> and <code>UnsafeCell</code></a></h2>
+<p>See <a href="src/ref_graph.rs.html">full example</a>.</p>
+<p>In this approach we use borrowed references as edges. This is nice and ergonomic
+and lets us use our nodes with 'regular' Rust libraries which primarily operate
+with borrowed references (note that one nice thing about ref counted objects in
+Rust is that they play nicely with the lifetime system. We can create a borrowed
+reference into the <code>Rc</code> to directly (and safely) reference the data. In the
+previous example, the <code>RefCell</code> prevents us doing this, but an <code>Rc</code>/<code>UnsafeCell</code>
+approach should allow it).</p>
+<p>Destruction is correctly handled too - the only constraint is that all the nodes
+must be destroyed at the same time. Destruction and allocation of nodes is
+handled using an arena.</p>
+<p>On the other hand, we do need to use quite a few explicit lifetimes.
+Unfortunately we don't benefit from lifetime elision here. At the end of the
+section I'll discuss some future directions for the language which could make
+things better.</p>
+<p>During construction we will mutate our nodes which might be multiply referenced.
+This is not possible in safe Rust code, so we must initialise inside an <code>unsafe</code>
+block. Since our nodes are mutable and multiply referenced, we must use an
+<code>UnsafeCell</code> to communicate to the Rust compiler that it cannot rely on its
+usual invariants.</p>
+<p>When is this approach feasible? The graph must only be mutated during
+initialisation. In addition, we require that all nodes in the graph have the
+same lifetime (we could relax these constraints somewhat to allow adding nodes
+later as long as they can all be destroyed at the same time). Similarly, we
+could rely on more complicated invariants for when the nodes can be mutated, but
+it pays to keep things simple, since the programmer is responsible for safety
+in those respects.</p>
+<p>Arena allocation is a memory management technique where a set of objects have
+the same lifetime and can be deallocated at the same time. An arena is an object
+responsible for allocating and deallocating the memory. Since large chunks of
+memory are allocated and deallocated at once (rather than allocating individual
+objects), arena allocation is very efficient. Usually, all the objects are
+allocated from a contiguous chunk of memory, that improves cache coherency when
+you are traversing the graph.</p>
+<p>In Rust, arena allocation is supported by the <a href="https://doc.rust-lang.org/1.1.0/arena/index.html">libarena</a>
+crate and is used throughout the compiler. There are two kinds of arenas - typed
+and untyped. The former is more efficient and easier to use, but can only
+allocate objects of a single type. The latter is more flexible and can allocate
+any object. Arena allocated objects all have the same lifetime, which is a
+parameter of the arena object. The type system ensures references to arena
+allocated objects cannot live longer than the arena itself.</p>
+<p>Our node struct must now include the lifetime of the graph, <code>'a</code>. We wrap our
+<code>Vec</code> of adjacent nodes in an <code>UnsafeCell</code> to indicate that we will mutate it
+even when it should be immutable:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Node&lt;'a&gt; {
+    datum: &amp;'static str,
+    edges: UnsafeCell&lt;Vec&lt;&amp;'a Node&lt;'a&gt;&gt;&gt;,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Our new function must also use this lifetime and must take as an argument the
+arena which will do the allocation:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn new&lt;'a&gt;(datum: &amp;'static str, arena: &amp;'a TypedArena&lt;Node&lt;'a&gt;&gt;) -&gt; &amp;'a Node&lt;'a&gt; {
+    arena.alloc(Node {
+        datum: datum,
+        edges: UnsafeCell::new(Vec::new()),
+    })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We use the arena to allocate the node. The lifetime of the graph is derived from
+the lifetime of the reference to the arena, so the arena must be passed in from
+the scope which covers the graph's lifetime. For our examples, that means we
+pass it into the <code>init</code> method. (One could imagine an extension to the type
+system which allows creating values at scopes outside their lexical scope, but
+there are no plans to add such a thing any time soon). When the arena goes out
+of scope, the whole graph is destroyed (Rust's type system ensures that we can't
+keep references to the graph beyond that point).</p>
+<p>Adding an edge is a bit different looking:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>(*root.edges.get()).push(b);
+<span class="boring">}
+</span></code></pre></pre>
+<p>We're essentially doing the obvious <code>root.edges.push(b)</code> to push a node (<code>b</code>) on
+to the list of edges. However, since <code>edges</code> is wrapped in an <code>UnsafeCell</code>, we
+have to call <code>get()</code> on it. That gives us a mutable raw pointer to edges (<code>*mut Vec&lt;&amp;Node&gt;</code>), which allows us to mutate <code>edges</code>. However, it also requires us to
+manually dereference the pointer (raw pointers do not auto-deref), thus the
+<code>(*...)</code> construction. Finally, dereferencing a raw pointer is unsafe, so the
+whole lot has to be wrapped up in an unsafe block.</p>
+<p>The interesting part of <code>traverse</code> is:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>for n in &amp;(*self.edges.get()) {
+    n.traverse(f, seen);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We follow the previous pattern for getting at the edges list, which requires an
+unsafe block. In this case we know it is in fact safe because we must be post-
+initialisation and thus there will be no mutation.</p>
+<p>Again, the <code>first</code> method follows the same pattern for getting at the <code>edges</code>
+list. And again must be in an unsafe block. However, in contrast to the graph
+using <code>Rc&lt;RefCell&lt;_&gt;&gt;</code>, we can return a straightforward borrowed reference to
+the node. That is very convenient. We can reason that the unsafe block is safe
+because we do no mutation and we are post-initialisation.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn first(&amp;'a self) -&gt; &amp;'a Node&lt;'a&gt; {
+    unsafe {
+        (*self.edges.get())[0]
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="future-language-improvements-for-this-approach"><a class="header" href="#future-language-improvements-for-this-approach">Future language improvements for this approach</a></h3>
+<p>I believe that arena allocation and using borrowed references are an important
+pattern in Rust. We should do more in the language to make these patterns safer
+and easier to use. I hope use of arenas becomes more ergonomic with the ongoing
+work on <a href="https://github.com/rust-lang/rfcs/pull/244">allocators</a>. There are
+three other improvements I see:</p>
+<h4 id="safe-initialisation"><a class="header" href="#safe-initialisation">Safe initialisation</a></h4>
+<p>There has been lots of research in the OO world on mechanisms for ensuring
+mutability only during initialisation. How exactly this would work in Rust is an
+open research question, but it seems that we need to represent a pointer which
+is mutable and not unique, but restricted in scope. Outside that scope any
+existing pointers would become normal borrowed references, i.e., immutable <em>or</em>
+unique.</p>
+<p>The advantage of such a scheme is that we have a way to represent the common
+pattern of mutable during initialisation, then immutable. It also relies on the
+invariant that, while individual objects are multiply owned, the aggregate (in
+this case a graph) is uniquely owned. We should then be able to adopt the
+reference and <code>UnsafeCell</code> approach, without the <code>UnsafeCell</code>s and the unsafe
+blocks, making that approach more ergonomic and more safer.</p>
+<p>Alex Summers and Julian Viereck at ETH Zurich are investigating this
+further.</p>
+<h4 id="generic-modules"><a class="header" href="#generic-modules">Generic modules</a></h4>
+<p>The 'lifetime of the graph' is constant for any particular graph. Repeating the
+lifetime is just boilerplate. One way to make this more ergonomic would be to
+allow the graph module to be parameterised by the lifetime, so it would not need
+to be added to every struct, impl, and function. The lifetime of the graph would
+still need to be specified from outside the module, but hopefully inference
+would take care of most uses (as it does today for function calls).</p>
+<p>See <a href="src/ref_graph_generic_mod.rs.html">ref_graph_generic_mod.rs</a> for how that might look.
+(We should also be able to use safe initialisation (proposed above) to remove
+the unsafe code).</p>
+<p>See also this <a href="https://github.com/rust-lang/rfcs/issues/424">RFC issue</a>.</p>
+<p>This feature would vastly reduce the syntactic overhead of the reference and
+<code>UnsafeCell</code> approach.</p>
+<h4 id="lifetime-elision"><a class="header" href="#lifetime-elision">Lifetime elision</a></h4>
+<p>We currently allow the programmer to elide some lifetimes in function signatures
+to improve ergonomics. One reason the <code>&amp;Node</code> approach to graphs is a bit ugly
+is because it doesn't benefit from any of the lifetime elision rules.</p>
+<p>A common pattern in Rust is data structures with a common lifetime. References
+into such data structures give rise to types like <code>&amp;'a Foo&lt;'a&gt;</code>, for example
+<code>&amp;'a Node&lt;'a&gt;</code> in the graph example. It would be nice to have an elision
+rule that helps in this case. I'm not really sure how it should work though.</p>
+<p>Looking at the example with generic modules, it doesn't look like we need to
+extend the lifetime elision rules very much (I'm not actually sure if
+<code>Node::new</code> would work without the given lifetimes, but it seems like a fairly
+trivial extension to make it work if it doesn't). We might want to add some new
+rule to allow elision of module-generic lifetimes if they are the only ones in
+scope (other than <code>'static</code>), but I'm not sure how that would work with multiple
+in- scope lifetimes (see the <code>foo</code> and <code>init</code> functions, for example).</p>
+<p>If we don't add generic modules, we might still be able to add an elision rule
+specifically to target <code>&amp;'a Node&lt;'a&gt;</code>, not sure how though.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../arrays.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../graphs/src/mod.rs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../arrays.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../graphs/src/mod.rs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

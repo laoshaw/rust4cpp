@@ -1,0 +1,655 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>closures and first-class functions - Rust for CPP Programmers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="hello-world.html"><strong aria-hidden="true">1.</strong> hello world</a></li><li class="chapter-item expanded "><a href="control-flow.html"><strong aria-hidden="true">2.</strong> control flow</a></li><li class="chapter-item expanded "><a href="primitives.html"><strong aria-hidden="true">3.</strong> primitive types</a></li><li class="chapter-item expanded "><a href="unique.html"><strong aria-hidden="true">4.</strong> unique pointers</a></li><li class="chapter-item expanded "><a href="borrowed.html"><strong aria-hidden="true">5.</strong> borrowed pointers</a></li><li class="chapter-item expanded "><a href="rc-raw.html"><strong aria-hidden="true">6.</strong> rc and raw pointers</a></li><li class="chapter-item expanded "><a href="data-types.html"><strong aria-hidden="true">7.</strong> data types</a></li><li class="chapter-item expanded "><a href="destructuring.html"><strong aria-hidden="true">8.</strong> destructuring 1</a></li><li class="chapter-item expanded "><a href="destructuring-2.html"><strong aria-hidden="true">9.</strong> destructuring 2</a></li><li class="chapter-item expanded "><a href="arrays.html"><strong aria-hidden="true">10.</strong> arrays and vecs</a></li><li class="chapter-item expanded "><a href="graphs/index.html"><strong aria-hidden="true">11.</strong> graphs and arena_allocation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="graphs/src/mod.rs.html"><strong aria-hidden="true">11.1.</strong> mod</a></li><li class="chapter-item expanded "><a href="graphs/src/rc_graph.rs.html"><strong aria-hidden="true">11.2.</strong> rc_graph</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph_generic_mod.rs.html"><strong aria-hidden="true">11.3.</strong> ref_graph_generic_mod</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph.rs.html"><strong aria-hidden="true">11.4.</strong> ref_graph</a></li></ol></li><li class="chapter-item expanded "><a href="closures.html" class="active"><strong aria-hidden="true">12.</strong> closures and first-class functions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust for CPP Programmers</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="closures-and-first-class-functions"><a class="header" href="#closures-and-first-class-functions">Closures and first-class functions</a></h1>
+<p>Closures and first-class and higher order functions are a core part of Rust. In
+C and C++ there are function pointers (and those weird member/method pointer
+things in C++ that I never got the hang of). However, they are used relatively
+rarely and are not very ergonomic. C++11 introduced lambdas, and these are
+pretty close to Rust closures, in particular they have a very similar
+implementation strategy.</p>
+<p>To start with, I want to establish some intuition for these things. Then, we'll
+dive in to the details.</p>
+<p>Lets say we have a function <code>foo</code>: <code>pub fn foo() -&gt; u32 { 42 }</code>. Now let's
+imagine another function <code>bar</code> which takes a function as an argument (I'll leave
+<code>bar</code>'s signature for later): <code>fn bar(f: ...) { ... }</code>. We can pass <code>foo</code> to
+<code>bar</code> kind of like we would pass a function pointer in C: <code>bar(foo)</code>. In the
+body of <code>bar</code> we can call <code>f</code> as if it were a function: <code>let x = f();</code>.</p>
+<p>We say that Rust has first-class functions because we can pass them around and
+use them like we can with other values. We say <code>bar</code> is a higher-order function
+because it takes a function as an argument, i.e., it is a function that operates
+on functions.</p>
+<p>Closures in Rust are anonymous functions with a nice syntax. A closure <code>|x| x + 2</code> takes an argument and returns it with <code>2</code> added. Note that we don't have to
+give types for the arguments to a closure (they can usually be inferred). We
+also don't need to specify a return type. If we want the closure body to be more
+than just one expression, we can use braces: <code>|x: i32| { let y = x + 2; y }</code>. We
+can pass closures just like functions: <code>bar(|| 42)</code>.</p>
+<p>The big difference between closures and other functions is that closures capture
+their environment. This means that we can refer to variables outside the closure
+from the closure. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let x = 42;
+bar(|| x);
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note how <code>x</code> is in scope in the closure.</p>
+<p>We've seen closures before, used with iterators, and this is a common use case
+for them. E.g., to add a value to each element of a vector:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn baz(v: Vec&lt;i32&gt;) -&gt; Vec&lt;i32&gt; {
+    let z = 3;
+    v.iter().map(|x| x + z).collect()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here <code>x</code> is an argument to the closure, each member of <code>v</code> will be passed as an
+<code>x</code>. <code>z</code> is declared outside of the closure, but because it's a closure, <code>z</code> can
+be referred to. We could also pass a function to map:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn add_two(x: i32) -&gt; i32 {
+    x + 2
+}
+
+fn baz(v: Vec&lt;i32&gt;) -&gt; Vec&lt;i32&gt; {
+    v.iter().map(add_two).collect()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note that Rust also allows declaring functions inside of functions. These are
+<em>not</em> closures - they can't access their environment. They are merely a
+convenience for scoping.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn qux(x: i32) {
+    fn quxx() -&gt; i32 {
+        x // ERROR x is not in scope.
+    }
+
+    let a = quxx();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="function-types"><a class="header" href="#function-types">Function types</a></h2>
+<p>Lets introduce a new example function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn add_42(x: i32) -&gt; i64 {
+    x as i64 + 42
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>As we saw before, we can store a function in a variable: <code>let a = add_42;</code>. The
+most precise type of <code>a</code> cannot be written in Rust. You'll sometimes see the
+compiler render it as <code>fn(i32) -&gt; i64 {add_42}</code> in error messages. Each function
+has its own unique and anonymous type. <code>fn add_41(x: i32) -&gt; i64</code> has a different
+type, even though it has the same signature.</p>
+<p>We can write less precise types, for example, <code>let a: fn(i32) -&gt; i64 = add_42;</code>.
+All function types with the same signature can be coerced to a <code>fn</code> type
+(which can be written by the programmer).</p>
+<p><code>a</code> is represented by the compiler as a function pointer, however, if the
+compiler knows the precise type, it doesn't actually use that function pointer.
+A call like a() is statically dispatched based on the type of a. If the
+compiler doesn't know the precise type (e.g., it only knows the fn type), then
+the call is dispatched using the function pointer in the value.</p>
+<p>There are also <code>Fn</code> types (note the capital 'F'). These <code>Fn</code> types are bounds,
+just like traits (in fact they <em>are</em> traits, as we'll see later). <code>Fn(i32) -&gt; i64</code>
+is a bound on the types of all function-like objects with that signature. When
+we take a reference to a function pointer, we're actually creating a trait
+object which is represented by a fat pointer (see DSTs).</p>
+<p>To pass a function to another function, or to store the function in a field, we
+must write a type. We have several choices, we can either use either a <code>fn</code> type
+or a <code>Fn</code> type. The latter is better because it includes closures (and
+potentially other function-like things), whereas <code>fn</code> types don't. The <code>Fn</code>
+types are dynamically sized which means we cannot use them as value types. We
+must either pass function objects or use generics. Let's look at the generic
+approach first. For example,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn bar&lt;F&gt;(f: F) -&gt; i64
+    where F: Fn(i32) -&gt; i64
+{
+    f(0)
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>bar</code> takes any function with the signature <code>Fn(i32) -&gt; i64</code>, i.e., we can
+instantiate the <code>F</code> type parameter with any function-like type. We could call
+<code>bar(add_42)</code> to pass <code>add_42</code> to <code>bar</code> which would instantiate <code>F</code> with
+<code>add_42</code>'s anonymous type. We could also call <code>bar(add_41)</code> and that would work
+too.</p>
+<p>You can also pass closures to <code>bar</code>, e.g., <code>bar(|x| x as i64)</code>. This works
+because closure types are also bounded by the <code>Fn</code> bound matching their
+signature (like functions, each closure has it's own anonymous type).</p>
+<p>Finally, you can pass references to functions or closures too: <code>bar(&amp;add_42)</code> or
+<code>bar(&amp;|x| x as i64)</code>.</p>
+<p>One could also write <code>bar</code> as <code>fn bar(f: &amp;Fn(i32) -&gt; i64) ...</code>. These two
+approaches (generics vs a function/trait object) have quite different semantics.
+In the generics case, <code>bar</code> will be monomorphised so when code is generated, the
+compiler know the exact type of <code>f</code>, that means it can be statically dispatched.
+If using a function object, the function is not monomorphised. The exact type of
+<code>f</code> is not known, and so the compiler must generate a virtual dispatch. The
+latter is slower, but the former will produce more code (one monomorphised
+function per type parameter instance).</p>
+<p>There are actually more function traits than just <code>Fn</code>; there are <code>FnMut</code> and
+<code>FnOnce</code> too. These are used in the same way as <code>Fn</code>, e.g., <code>FnOnce(i32) -&gt; i64</code>. A <code>FnMut</code> represents an object which can be called and can be mutated
+during that call. This doesn't apply to normal functions, but for closures it
+means the closure can mutate its environment. <code>FnOnce</code> is a function which can
+only be called (at most) once. Again, this is only relevant for closures.</p>
+<p><code>Fn</code>, <code>FnMut</code>, and <code>FnOnce</code> are in a sub-trait hierarchy. <code>Fn</code>s are <code>FnMut</code>s
+(because one can call a <code>Fn</code> function with permission to mutate and no harm is
+done, but the opposite is not true). <code>Fn</code>s and <code>FnMut</code>s are <code>FnOnce</code>s (because
+there is no harm done if a regular function is only called once, but not the
+opposite).</p>
+<p>So, to make a higher-order function as flexible as possible, you should use the
+<code>FnOnce</code> bound, rather than the <code>Fn</code> bound (or use the <code>FnMut</code> bound if you must
+call the function more than once).</p>
+<h3 id="methods"><a class="header" href="#methods">Methods</a></h3>
+<p>You can use methods in the same way as functions - take pointers to them store
+them in variables, etc. You can't use the dot syntax, you must explicitly name
+the method using the fully explicit form of naming (sometimes called UFCS for
+universal function call syntax). The <code>self</code> parameter is the first argument to
+the method. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust">struct Foo;
+
+impl Foo {
+    fn bar(&amp;self) {}
+}
+
+trait T {
+    fn baz(&amp;self);
+}
+
+impl T for Foo {
+    fn baz(&amp;self) {}
+}
+
+fn main() {
+    // Inherent method.
+    let x = Foo::bar;
+    x(&amp;Foo);
+    
+    // Trait method, note the fully explicit naming form.
+    let y = &lt;Foo as T&gt;::baz;
+    y(&amp;Foo);
+}
+</code></pre></pre>
+<h3 id="generic-functions"><a class="header" href="#generic-functions">Generic functions</a></h3>
+<p>You can't take a pointer to a generic function and there is no way to express a
+generic function type. However, you can take a reference to a function if all
+its type parameters are instantiated. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust">fn foo&lt;T&gt;(x: &amp;T) {}
+
+fn main() {
+    let x = &amp;foo::&lt;i32&gt;;
+    x(&amp;42);
+}
+</code></pre></pre>
+<p>There is no way to define a generic closure. If you need a closure to work over
+many types you can use trait objects, macros (for generating closures), or pass
+a closure which returns closures (each returned closure can operate on a
+different type).</p>
+<h3 id="lifetime-generic-functions-and-higher-ranked-types"><a class="header" href="#lifetime-generic-functions-and-higher-ranked-types">Lifetime-generic functions and higher-ranked types</a></h3>
+<p>It <em>is</em> possible to have function types and closures which are generic over
+lifetimes. </p>
+<p>Imagine we have a closure which takes a borrowed reference. The closure can work
+the same way no matter what lifetime the reference has (and indeed in the
+compiled code, the lifetime will have been erased). But, what does the type look
+like?</p>
+<p>For example,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;F&gt;(x: &amp;Bar, f: F) -&gt; &amp;Baz
+    where F: Fn(&amp;Bar) -&gt; &amp;Baz
+{
+    f(x)
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>what are the lifetimes of the references here? In this simple example, we can
+use a single lifetime (no need for a generic closure):</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;'b, F&gt;(x: &amp;'b Bar, f: F) -&gt; &amp;'b Baz
+    where F: Fn(&amp;'b Bar) -&gt; &amp;'b Baz
+{
+    f(x)
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>But what if we want <code>f</code> to work on inputs with different lifetimes? Then we need
+a generic function type:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;'b, 'c, F&gt;(x: &amp;'b Bar, y: &amp;'c Bar, f: F) -&gt; (&amp;'b Baz, &amp;'c Baz)
+    where F: for&lt;'a&gt; Fn(&amp;'a Bar) -&gt; &amp;'a Baz
+{
+    (f(x), f(y))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The novelty here is the <code>for&lt;'a&gt;</code> syntax, this is used to denote a function type
+which is generic over a lifetime. It is read &quot;for all 'a, ...&quot;. In theoretical
+terms, the function type is universally quantified.</p>
+<p>Note that we cannot hoist up <code>'a</code> to <code>foo</code> in the above example. Counter-example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;'a, 'b, 'c, F&gt;(x: &amp;'b Bar, y: &amp;'c Bar, f: F) -&gt; (&amp;'b Baz, &amp;'c Baz)
+    where F: Fn(&amp;'a Bar) -&gt; &amp;'a Baz
+{
+    (f(x), f(y))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>will not compile because when the compiler infers lifetimes for a call to <code>foo</code>,
+it must pick a single lifetime for <code>'a</code>, which it can't do if <code>'b</code> and <code>'c</code> are
+different.</p>
+<p>A function type which is generic in this way is called a higher-ranked type.
+Lifetime variables at the outer level have rank one. Because <code>'a</code> in the above
+example cannot be moved to the outer level, it's rank is higher than one.</p>
+<p>Calling functions with higher-ranked function type arguments is easy - the
+compiler will infer the lifetime parameters. E.g., <code>foo(&amp;Bar { ... }, &amp;Bar {...}, |b| &amp;b.field)</code>.</p>
+<p>In fact, most of the time you don't even need to worry about such things. The
+compiler will allow you to elide the quantified lifetimes in the same way that
+you are allowed to elide many lifetimes on function arguments. For example, the
+example above can just be written as</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;'b, 'c, F&gt;(x: &amp;'b Bar, y: &amp;'c Bar, f: F) -&gt; (&amp;'b Baz, &amp;'c Baz)
+    where F: Fn(&amp;Bar) -&gt; &amp;Baz
+{
+    (f(x), f(y))
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>(and you only need <code>'b</code> and <code>'c</code> because it is a contrived example).</p>
+<p>Where Rust sees a function type with a borrowed references, it will apply the
+usual elision rules, and quantify the elided variables at the scope of the
+function type (i.e., with higher rank).</p>
+<p>You might be wondering why bother with all this complexity for what looks like a
+fairly niche use case. The real motivation is functions which take a function
+to operate on some data provided by the outer function. For example,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;F&gt;(f: F)
+    where F: Fn(&amp;i32) // Fully explicit type: for&lt;'a&gt; Fn(&amp;'a i32)
+{
+    let data = 42;
+    f(&amp;data)
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>In these cases, we <em>need</em> higher-ranked types. If we added a lifetime parameter
+to <code>foo</code> instead, we could never infer a correct lifetime. To see why, let's
+look at how it might work, consider <code>fn foo&lt;'a, F: Fn(&amp;'a i32')&gt; ...</code>. Rust
+requires that any lifetime parameter must outlive the item it is declared on (if
+this were not the case, an argument with that lifetime could be used inside that
+function, where it is not guaranteed to be live). In the body of <code>foo</code> we use
+<code>f(&amp;data)</code>, the lifetime Rust will infer for that reference will last (at most)
+from where <code>data</code> is declared to where it goes out of scope. Since <code>'a</code> must
+outlive <code>foo</code>, but that inferred lifetime does not, we cannot call <code>f</code> in this
+way.</p>
+<p>However, with higher-ranked lifetimes <code>f</code> can accept any lifetime and so the
+anonymous one from <code>&amp;data</code> is fine and the function type checks.</p>
+<h3 id="enum-constructors"><a class="header" href="#enum-constructors">Enum constructors</a></h3>
+<p>This is something of a digression, but it is sometimes a useful trick. All
+variants of an enum define a function from the fields of the variant to the enum
+type. For example,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Foo {
+    Bar,
+    Baz(i32),
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>defines two functions, <code>Foo::Bar: Fn() -&gt; Foo</code> and <code>Foo::Baz: Fn(i32) -&gt; Foo</code>.
+We don't normally use the variants in this way, we treat them as data types
+rather than functions. But sometimes it is useful, for example if we have a list
+of <code>i32</code>s we can create a list of <code>Foo</code>s with</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>list_of_i32.iter().map(Foo::Baz).collect()
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="closure-flavours"><a class="header" href="#closure-flavours">Closure flavours</a></h2>
+<p>A closure has two forms of input: the arguments which are passed to it explicitly
+and the variables it <em>captures</em> from its environment. Usually, everything about
+both kinds of input is inferred, but you can have more control if you want it.</p>
+<p>For the arguments, you can declare types instead of letting Rust infer them. You
+can also declare a return type. Rather than writing <code>|x| { ... }</code> you can write
+<code>|x: i32| -&gt; String { ... }</code>. Whether an argument is owned or borrowed is 
+determined by the types (either declared or inferred).</p>
+<p>For the captured variables, the type is mostly known from the environment, but
+Rust does a little extra magic. Should a variable be captured by reference or
+value? Rust infers this from the body of the closure. If possible, Rust captures
+by reference. E.g.,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(x: Bar) {
+    let f = || { ... x ... };
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>All being well, in the body of <code>f</code>, <code>x</code> has the type <code>&amp;Bar</code> with a lifetime
+bounded by the scope of <code>foo</code>. However, if <code>x</code> is mutated, then Rust will infer
+that the capture is by mutable reference, i.e., <code>x</code> has type <code>&amp;mut Bar</code>. If <code>x</code>
+is moved in <code>f</code> (e.g., is stored into a variable or field with value type), then
+Rust infers that the variable must be captured by value, i.e., it has the type
+<code>Bar</code>.</p>
+<p>This can be overridden by the programmer (sometimes necessary if the closure
+will be stored in a field or returned from a function). By using the <code>move</code>
+keyword in front of a closure. Then, all of the captured variables are captured
+by value. E.g., in <code>let f = move || { ... x ... };</code>, <code>x</code> would always have type
+<code>Bar</code>.</p>
+<p>We talked earlier about the different function kinds: <code>Fn</code>, <code>FnMut</code>, and <code>FnOnce</code>.
+We can now explain why we need them. For closures, the mutable-ness and once-ness
+refer to the captured variables. If a capture mutates any of the variables it
+captures then it will have a <code>FnMut</code> type (note that this is completely inferred
+by the compiler, no annotation is necessary). If a variable is moved into a
+closure, i.e., it is captured by value (either because of an explicit <code>move</code> or
+due to inference), then the closure will have a <code>FnOnce</code> type. It would be unsafe
+to call such a closure multiple times because the captured variable would be
+moved more than once.</p>
+<p>Rust will do its best to infer the most flexible type for the closure if it can.</p>
+<h2 id="implementation"><a class="header" href="#implementation">Implementation</a></h2>
+<p>A closure is implemented as an anonymous struct. That struct has a field for
+each variable captured by the closure. It is lifetime-parametric with a single
+lifetime parameter which is a bound on the lifetime of captured variables. The
+anonymous struct implements a <code>call</code> method which is called to execute the
+closure.</p>
+<p>For example, consider</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let x = Foo { ... };
+    let f = |y| x.get_number() + y;
+    let z = f(42);
+}
+</code></pre></pre>
+<p>the compiler treats this as</p>
+<pre><pre class="playground"><code class="language-rust">struct Closure14&lt;'env&gt; {
+    x: &amp;'env Foo,
+}
+
+// Not actually implemented like this, see below.
+impl&lt;'env&gt; Closure14&lt;'env&gt; {
+    fn call(&amp;self, y: i32) -&gt; i32 {
+        self.x.get_number() + y
+    }
+}
+
+fn main() {
+    let x = Foo { ... };
+    let f = Closure14 { x: x }
+    let z = f.call(42);
+}
+</code></pre></pre>
+<p>As we mentioned above, there are three different function traits - <code>Fn</code>,
+<code>FnMut</code>, and <code>FnOnce</code>. In reality the <code>call</code> method is required by these traits
+rather than being in an inherent impl. <code>Fn</code> has a method <code>call</code> which takes
+<code>self</code> by reference, <code>FnMut</code> has <code>call_mut</code> taking <code>self</code> by mutable reference,
+and <code>FnOnce</code> has <code>call_once</code> which takes <code>self</code> by values.</p>
+<p>When we've seen function types above, they look like <code>Fn(i32) -&gt; i32</code> which
+doesn't look much like a trait type. There is a little bit of magic here. Rust allows
+this round bracket sugar only for function types. To desugar to a regular type
+(an 'angle bracket type'), the argument types are treated as a tuple type and
+passed as a type parameter and the return type as an associated type called
+<code>Output</code>. So, <code>Fn(i32) -&gt; i32</code> is desugared to <code>Fn&lt;(i32,), Output=i32&gt;</code> and the
+<code>Fn</code> trait definition looks like</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Fn&lt;Args&gt; : FnMut&lt;Args&gt; {
+    fn call(&amp;self, args: Args) -&gt; Self::Output;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The implementation for <code>Closure14</code> above would therefore look more like</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>impl&lt;'env&gt; FnOnce&lt;(i32,)&gt; for Closure14&lt;'env&gt; {
+    type Output = i32;
+    fn call_once(self, args: (i32,)) -&gt; i32 {
+        ...
+    }
+}
+impl&lt;'env&gt; FnMut&lt;(i32,)&gt; for Closure14&lt;'env&gt; {
+    fn call_mut(&amp;mut self, args: (i32,)) -&gt; i32 {
+        ...
+    }
+}
+impl&lt;'env&gt; Fn&lt;(i32,)&gt; for Closure14&lt;'env&gt; {
+    fn call(&amp;self, args: (i32,)) -&gt; i32 {
+        ...
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>You can find the function traits in
+<a href="https://dxr.mozilla.org/rust/source/src/libcore/ops.rs">core::ops</a></p>
+<p>We talked above about how using generics gives static dispatch and using trait
+objects gives virtual dispatch. We can now see in a bit more detail why.</p>
+<p>When we call <code>call</code>, it is a statically dispatched method call, there is no
+virtual dispatch. If we pass it to a monomorphised function, we still know the
+type statically, and we still get a static dispatch.</p>
+<p>We can make the closure into a trait object, e.g., <code>&amp;f</code> or <code>Box::new(f)</code> with
+types <code>&amp;Fn(i32)-&gt;i32</code> or <code>Box&lt;Fn(i32)-&gt;i32&gt;</code>. These are pointer types, and
+because they are pointer-to-trait types, the pointers are fat pointers. That
+means they consist of the pointer to the data itself and a pointer to a vtable.
+The vtable is used to lookup the address of <code>call</code> (or <code>call_mut</code> or whatever).</p>
+<p>You'll sometimes hear these two representations of closures called boxed and
+unboxed closures. An unboxed closure is the by-value version with static
+dispatch. A boxed version is the trait object version with dynamic dispatch. In
+the olden days, Rust only had boxed closures (and the system was quite a bit
+different).</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0114-closures.md">RFC 114 - Closures</a></li>
+<li><a href="http://huonw.github.io/blog/2015/05/finding-closure-in-rust/">Finding Closure in Rust blog post</a></li>
+<li><a href="https://github.com/rust-lang/rfcs/blob/master/text/0387-higher-ranked-trait-bounds.md">RFC 387 - Higher ranked trait bounds</a></li>
+<li><a href="http://smallcultfollowing.com/babysteps/blog/2014/11/26/purging-proc/">Purging proc blog post</a></li>
+</ul>
+<p>FIXME: relate to closures in C++ 11</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="graphs/src/ref_graph.rs.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="graphs/src/ref_graph.rs.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

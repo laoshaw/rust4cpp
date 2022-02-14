@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Introduction - Rust for CPP Programmers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">Introduction</a></li><li class="chapter-item expanded "><a href="hello-world.html"><strong aria-hidden="true">1.</strong> hello world</a></li><li class="chapter-item expanded "><a href="control-flow.html"><strong aria-hidden="true">2.</strong> control flow</a></li><li class="chapter-item expanded "><a href="primitives.html"><strong aria-hidden="true">3.</strong> primitive types</a></li><li class="chapter-item expanded "><a href="unique.html"><strong aria-hidden="true">4.</strong> unique pointers</a></li><li class="chapter-item expanded "><a href="borrowed.html"><strong aria-hidden="true">5.</strong> borrowed pointers</a></li><li class="chapter-item expanded "><a href="rc-raw.html"><strong aria-hidden="true">6.</strong> rc and raw pointers</a></li><li class="chapter-item expanded "><a href="data-types.html"><strong aria-hidden="true">7.</strong> data types</a></li><li class="chapter-item expanded "><a href="destructuring.html"><strong aria-hidden="true">8.</strong> destructuring 1</a></li><li class="chapter-item expanded "><a href="destructuring-2.html"><strong aria-hidden="true">9.</strong> destructuring 2</a></li><li class="chapter-item expanded "><a href="arrays.html"><strong aria-hidden="true">10.</strong> arrays and vecs</a></li><li class="chapter-item expanded "><a href="graphs/index.html"><strong aria-hidden="true">11.</strong> graphs and arena_allocation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="graphs/src/mod.rs.html"><strong aria-hidden="true">11.1.</strong> mod</a></li><li class="chapter-item expanded "><a href="graphs/src/rc_graph.rs.html"><strong aria-hidden="true">11.2.</strong> rc_graph</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph_generic_mod.rs.html"><strong aria-hidden="true">11.3.</strong> ref_graph_generic_mod</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph.rs.html"><strong aria-hidden="true">11.4.</strong> ref_graph</a></li></ol></li><li class="chapter-item expanded "><a href="closures.html"><strong aria-hidden="true">12.</strong> closures and first-class functions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust for CPP Programmers</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="rust-for-systems-programmers"><a class="header" href="#rust-for-systems-programmers">Rust For Systems Programmers</a></h1>
+<p>A Rust tutorial for experienced C and C++ programmers.</p>
+<p>https://github.com/nrc/r4cppp</p>
+<p>Jump to <a href="#contents">contents</a>.
+Jump to <a href="#contributing">contributing</a>.</p>
+<p>This tutorial is intended for programmers who already know how pointers and
+references work and are used to systems programming concepts such as integer
+widths and memory management. We intend to cover, primarily, the differences
+between Rust and C++ to get you writing Rust programs quickly without lots of
+fluff you probably already know.</p>
+<p>Hopefully, Rust is a pretty intuitive language for C++ programmers. Most of the
+syntax is pretty similar. The big difference (in my experience) is that the
+sometimes vague concepts of good systems programming are strictly enforced by
+the compiler. This can be infuriating at first - there are things you want to
+do, but the compiler won't let you (at least in safe code), and sometimes these
+things <em>are</em> safe, but you can't convince the compiler of that. However, you'll
+quickly develop a good intuition for what is allowed. Communicating your own
+notions of memory safety to the compiler requires some new and sometimes
+complicated type annotations. But if you have a strong idea of lifetimes for
+your objects and experience with generic programming, they shouldn't be too
+tough to learn.</p>
+<p>This tutorial started as a <a href="http://featherweightmusings.blogspot.co.nz/search/label/rust-for-c">series of blog posts</a>.
+Partly as an aid for me (@nrc) learning Rust (there is no better way to
+check that you have learnt something than to try and explain it to somebody
+else) and partly because I found the existing resources for learning Rust
+unsatisfactory - they spent too much time on the basics that I already knew and
+used higher level intuitions to describe concepts that could better be explained
+to me using lower level intuitions. Since then, the documentation for Rust has
+got <em>much</em> better, but I still think that existing C++ programmers are an
+audience who are a natural target for Rust, but are not particularly well
+catered for.</p>
+<h2 id="contents"><a class="header" href="#contents">Contents</a></h2>
+<ol>
+<li><a href="hello-world.html">Introduction - Hello world!</a></li>
+<li><a href="control-flow.html">Control flow</a></li>
+<li><a href="primitives.html">Primitive types and operators</a></li>
+<li><a href="unique.html">Unique pointers</a></li>
+<li><a href="borrowed.html">Borrowed pointers</a></li>
+<li><a href="rc-raw.html">Rc and raw pointers</a></li>
+<li><a href="data-types.html">Data types</a></li>
+<li><a href="destructuring.html">Destructuring pt 1</a></li>
+<li><a href="destructuring-2.html">Destructuring pt 2</a></li>
+<li><a href="arrays.html">Arrays and vecs</a></li>
+<li><a href="graphs/README.html">Graphs and arena allocation</a></li>
+<li><a href="closures.html">Closures and first-class functions</a></li>
+</ol>
+<h2 id="other-resources"><a class="header" href="#other-resources">Other resources</a></h2>
+<ul>
+<li><a href="http://doc.rust-lang.org/book/">The Rust book/guide</a> - the best place for
+learning Rust in general and probably the best place to go for a second opinion
+on stuff here or for stuff not covered.</li>
+<li><a href="http://doc.rust-lang.org/std/index.html">Rust API documentation</a> - detailed
+documentation for the Rust libraries.</li>
+<li><a href="https://doc.rust-lang.org/reference/">The Rust reference manual</a> - a little
+out of date in places, but thorough; good for looking up details.</li>
+<li><a href="http://users.rust-lang.org/">Discuss forum</a> - general forum for discussion or
+questions about using and learning Rust.</li>
+<li><a href="https://stackoverflow.com/questions/tagged/rust">StackOverflow Rust questions</a> - answers
+to many beginner and advanced questions about Rust, but be careful though - Rust
+has changed <em>a lot</em> over the years and some of the answers might be very out of date.</li>
+<li><a href="https://www.youtube.com/watch?v=IPmRDS0OSxM">A Firehose of Rust</a> - a recorded talk
+introducing C++ programmers to how lifetimes, mutable aliasing, and move semantics work
+in Rust</li>
+</ul>
+<h2 id="contributing"><a class="header" href="#contributing">Contributing</a></h2>
+<p>Yes please!</p>
+<p>If you spot a typo or mistake, please submit a PR, don't be shy! Please feel
+free to file <a href="https://github.com/nrc/r4cppp/issues/new">an issue</a> for
+larger changes or for new chapters you'd like to see. I'd also be happy to see
+re-organisation of existing work or expanded examples, if you feel the tutorial
+could be improved in those ways.</p>
+<p>If you'd like to contribute a paragraph, section, or chapter please do! If you
+want ideas for things to cover, see the <a href="https://github.com/nrc/r4cppp/issues">list of issues</a>,
+in particular those tagged <a href="https://github.com/nrc/r4cppp/labels/new%20material">new material</a>.
+If you're not sure of something, please get in touch by pinging me here
+(@nrc) or on irc (nrc, on #rust or #rust-internals).</p>
+<h3 id="style"><a class="header" href="#style">Style</a></h3>
+<p>Obviously, the intended audience is C++ programmers. The tutorial should
+concentrate on things that will be new to experienced C++ programmers, rather
+than a general audience (although, I don't assume the audience is familiar with
+the most recent versions of C++). I'd like to avoid too much basic material and
+definitely avoid too much overlap with other resources, in particular the Rust
+guide/book.</p>
+<p>Work on edge case use cases (e.g., using a different build system from Cargo, or
+writing syntax extensions, using unstable APIs) is definitely welcome, as is
+in-depth work on topics already covered at a high level.</p>
+<p>I'd like to avoid recipe-style examples for converting C++ code to Rust code,
+but small examples of this kind are OK.</p>
+<p>Use of different formats (e.g., question and answer/FAQs, or larger worked
+examples) are welcome.</p>
+<p>I don't plan on adding exercises or suggestions for mini-projects, but if you're
+interested in that, let me know.</p>
+<p>I'm aiming for a fairly academic tone, but not too dry. All writing should be in
+English (British English, not American English; although I would be very happy
+to have localisations/translations into any language, including American
+English) and be valid GitHub markdown. For advice on writing style, grammar,
+punctuation, etc. see the Oxford Style Manual
+or <a href="http://www.economist.com/styleguide/introduction">The Economist Style Guide</a>.
+Please limit width to 80 columns. I am a fan of the Oxford comma.</p>
+<p>Don't feel like work has to be perfect to be submitted, I'm happy to edit and
+I'm sure other people will be in the future.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next" href="hello-world.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next" href="hello-world.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

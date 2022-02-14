@@ -1,0 +1,532 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>data types - Rust for CPP Programmers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="hello-world.html"><strong aria-hidden="true">1.</strong> hello world</a></li><li class="chapter-item expanded "><a href="control-flow.html"><strong aria-hidden="true">2.</strong> control flow</a></li><li class="chapter-item expanded "><a href="primitives.html"><strong aria-hidden="true">3.</strong> primitive types</a></li><li class="chapter-item expanded "><a href="unique.html"><strong aria-hidden="true">4.</strong> unique pointers</a></li><li class="chapter-item expanded "><a href="borrowed.html"><strong aria-hidden="true">5.</strong> borrowed pointers</a></li><li class="chapter-item expanded "><a href="rc-raw.html"><strong aria-hidden="true">6.</strong> rc and raw pointers</a></li><li class="chapter-item expanded "><a href="data-types.html" class="active"><strong aria-hidden="true">7.</strong> data types</a></li><li class="chapter-item expanded "><a href="destructuring.html"><strong aria-hidden="true">8.</strong> destructuring 1</a></li><li class="chapter-item expanded "><a href="destructuring-2.html"><strong aria-hidden="true">9.</strong> destructuring 2</a></li><li class="chapter-item expanded "><a href="arrays.html"><strong aria-hidden="true">10.</strong> arrays and vecs</a></li><li class="chapter-item expanded "><a href="graphs/index.html"><strong aria-hidden="true">11.</strong> graphs and arena_allocation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="graphs/src/mod.rs.html"><strong aria-hidden="true">11.1.</strong> mod</a></li><li class="chapter-item expanded "><a href="graphs/src/rc_graph.rs.html"><strong aria-hidden="true">11.2.</strong> rc_graph</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph_generic_mod.rs.html"><strong aria-hidden="true">11.3.</strong> ref_graph_generic_mod</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph.rs.html"><strong aria-hidden="true">11.4.</strong> ref_graph</a></li></ol></li><li class="chapter-item expanded "><a href="closures.html"><strong aria-hidden="true">12.</strong> closures and first-class functions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust for CPP Programmers</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="data-types"><a class="header" href="#data-types">Data types</a></h1>
+<p>In this post I'll discuss Rust's data types. These are roughly equivalent to
+classes, structs, and enums in C++. One difference with Rust is that data and
+behaviour are much more strictly separated in Rust than C++ (or Java, or other
+OO languages). Behaviour is defined by functions and those can be defined in
+traits and <code>impl</code>s (implementations), but traits cannot contain data, they are
+similar to Java's interfaces in that respect. I'll cover traits and impls in a
+later post, this one is all about data.</p>
+<h2 id="structs"><a class="header" href="#structs">Structs</a></h2>
+<p>A rust struct is similar to a C struct or a C++ struct without methods. Simply a
+list of named fields. The syntax is best seen with an example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct S {
+    field1: i32,
+    field2: SomeOtherStruct
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here we define a struct called <code>S</code> with two fields. The fields are comma
+separated; if you like, you can comma-terminate the last field too.</p>
+<p>Structs introduce a type. In the example, we could use <code>S</code> as a type.
+<code>SomeOtherStruct</code> is assumed to be another struct (used as a type in the
+example), and (like C++) it is included by value, that is, there is no pointer
+to another struct object in memory.</p>
+<p>Fields in structs are accessed using the <code>.</code> operator and their name. An example
+of struct use:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(s1: S, s2: &amp;S) {
+    let f = s1.field1;
+    if f == s2.field1 {
+        println!(&quot;field1 matches!&quot;);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here <code>s1</code> is struct object passed by value and <code>s2</code> is a struct object passed by
+reference. As with method calls, we use the same <code>.</code> to access fields in both, no
+need for <code>-&gt;</code>.</p>
+<p>Structs are initialised using struct literals. These are the name of the struct
+and values for each field. For example,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(sos: SomeOtherStruct) {
+    let x = S { field1: 45, field2: sos };  // initialise x with a struct literal
+    println!(&quot;x.field1 = {}&quot;, x.field1);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Structs cannot be recursive; that is, you can't have cycles of struct names
+involving definitions and field types. This is because of the value semantics of
+structs. So for example, <code>struct R { r: Option&lt;R&gt; }</code> is illegal and will cause a
+compiler error (see below for more about Option). If you need such a structure
+then you should use some kind of pointer; cycles with pointers are allowed:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct R {
+    r: Option&lt;Box&lt;R&gt;&gt;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>If we didn't have the <code>Option</code> in the above struct, there would be no way to
+instantiate the struct and Rust would signal an error.</p>
+<p>Structs with no fields do not use braces in either their definition or literal
+use. Definitions do need a terminating semi-colon though, presumably just to
+facilitate parsing.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Empty;
+
+fn foo() {
+    let e = Empty;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="tuples"><a class="header" href="#tuples">Tuples</a></h2>
+<p>Tuples are anonymous, heterogeneous sequences of data. As a type, they are
+declared as a sequence of types in parentheses. Since there is no name, they are
+identified by structure. For example, the type <code>(i32, i32)</code> is a pair of
+integers and <code>(i32, f32, S)</code> is a triple. Tuple values are initialised in the
+same way as tuple types are declared, but with values instead of types for the
+components, e.g., <code>(4, 5)</code>. An example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// foo takes a struct and returns a tuple
+fn foo(x: SomeOtherStruct) -&gt; (i32, f32, S) {
+    (23, 45.82, S { field1: 54, field2: x })
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Tuples can be used by destructuring using a <code>let</code> expression, e.g.,</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn bar(x: (i32, i32)) {
+    let (a, b) = x;
+    println!(&quot;x was ({}, {})&quot;, a, b);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We'll talk more about destructuring next time.</p>
+<h2 id="tuple-structs"><a class="header" href="#tuple-structs">Tuple structs</a></h2>
+<p>Tuple structs are named tuples, or alternatively, structs with unnamed fields.
+They are declared using the <code>struct</code> keyword, a list of types in parentheses,
+and a semicolon. Such a declaration introduces their name as a type. Their
+fields must be accessed by destructuring (like a tuple), rather than by name.
+Tuple structs are not very common.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct IntPoint (i32, i32);
+
+fn foo(x: IntPoint) {
+    let IntPoint(a, b) = x;  // Note that we need the name of the tuple
+                             // struct to destructure.
+    println!(&quot;x was ({}, {})&quot;, a, b);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="enums"><a class="header" href="#enums">Enums</a></h2>
+<p>Enums are types like C++ enums or unions, in that they are types which can take
+multiple values. The simplest kind of enum is just like a C++ enum:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum E1 {
+    Var1,
+    Var2,
+    Var3
+}
+
+fn foo() {
+    let x: E1 = Var2;
+    match x {
+        Var2 =&gt; println!(&quot;var2&quot;),
+        _ =&gt; {}
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>However, Rust enums are much more powerful than that. Each variant can contain
+data. Like tuples, these are defined by a list of types. In this case they are
+more like unions than enums in C++. Rust enums are tagged unions rather than untagged unions (as in C++). 
+That means you can't mistake one variant of an enum for another at runtime<sup><a href="#1">1</a></sup>. An example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>enum Expr {
+    Add(i32, i32),
+    Or(bool, bool),
+    Lit(i32)
+}
+
+fn foo() {
+    let x = Or(true, false);   // x has type Expr
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Many simple cases of object-oriented polymorphism are better handled in Rust
+using enums.</p>
+<p>To use enums we usually use a match expression. Remember that these are similar
+to C++ switch statements. I'll go into more depth on these and other ways to
+destructure data next time. Here's an example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn bar(e: Expr) {
+    match e {
+        Add(x, y) =&gt; println!(&quot;An `Add` variant: {} + {}&quot;, x, y),
+        Or(..) =&gt; println!(&quot;An `Or` variant&quot;),
+        _ =&gt; println!(&quot;Something else (in this case, a `Lit`)&quot;),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Each arm of the match expression matches a variant of <code>Expr</code>. All variants must
+be covered. The last case (<code>_</code>) covers all remaining variants, although in the
+example there is only <code>Lit</code>. Any data in a variant can be bound to a variable.
+In the <code>Add</code> arm we are binding the two i32s in an <code>Add</code> to <code>x</code> and <code>y</code>. If we
+don't care about the data, we can use <code>..</code> to match any data, as we do for <code>Or</code>.</p>
+<h2 id="option"><a class="header" href="#option">Option</a></h2>
+<p>One particularly common enum in Rust is <code>Option</code>. This has two variants - <code>Some</code>
+and <code>None</code>. <code>None</code> has no data and <code>Some</code> has a single field with type <code>T</code>
+(<code>Option</code> is a generic enum, which we will cover later, but hopefully the
+general idea is clear from C++). Options are used to indicate a value might be
+there or might not. Any place you use a null pointer in C++<sup><a href="#2">2</a></sup>
+to indicate a value which is in some way undefined, uninitialised, or false,
+you should probably use an Option in Rust. Using Option is safer because you
+must always check it before use; there is no way to do the equivalent of
+dereferencing a null pointer. They are also more general, you can use them with
+values as well as pointers. An example:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use std::rc::Rc;
+
+struct Node {
+    parent: Option&lt;Rc&lt;Node&gt;&gt;,
+    value: i32
+}
+
+fn is_root(node: Node) -&gt; bool {
+    match node.parent {
+        Some(_) =&gt; false,
+        None =&gt; true
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here, the parent field could be either a <code>None</code> or a <code>Some</code> containing an
+<code>Rc&lt;Node&gt;</code>. In the example, we never actually use that payload, but in real life
+you usually would.</p>
+<p>There are also convenience methods on Option, so you could write the body of
+<code>is_root</code> as <code>node.parent.is_none()</code> or <code>!node.parent.is_some()</code>.</p>
+<h2 id="inherited-mutability-and-cellrefcell"><a class="header" href="#inherited-mutability-and-cellrefcell">Inherited mutability and Cell/RefCell</a></h2>
+<p>Local variables in Rust are immutable by default and can be marked mutable using
+<code>mut</code>. We don't mark fields in structs or enums as mutable, their mutability is
+inherited. This means that a field in a struct object is mutable or immutable
+depending on whether the object itself is mutable or immutable. Example:</p>
+<pre><pre class="playground"><code class="language-rust">struct S1 {
+    field1: i32,
+    field2: S2
+}
+struct S2 {
+    field: i32
+}
+
+fn main() {
+    let s = S1 { field1: 45, field2: S2 { field: 23 } };
+    // s is deeply immutable, the following mutations are forbidden
+    // s.field1 = 46;
+    // s.field2.field = 24;
+
+    let mut s = S1 { field1: 45, field2: S2 { field: 23 } };
+    // s is mutable, these are OK
+    s.field1 = 46;
+    s.field2.field = 24;
+}
+</code></pre></pre>
+<p>Inherited mutability in Rust stops at references. This is similar to C++ where
+you can modify a non-const object via a pointer from a const object. If you want
+a reference field to be mutable, you have to use <code>&amp;mut</code> on the field type:</p>
+<pre><pre class="playground"><code class="language-rust">struct S1 {
+    f: i32
+}
+struct S2&lt;'a&gt; {
+    f: &amp;'a mut S1   // mutable reference field
+}
+struct S3&lt;'a&gt; {
+    f: &amp;'a S1       // immutable reference field
+}
+
+fn main() {
+    let mut s1 = S1{f:56};
+    let s2 = S2 { f: &amp;mut s1};
+    s2.f.f = 45;   // legal even though s2 is immutable
+    // s2.f = &amp;mut s1; // illegal - s2 is not mutable
+    let s1 = S1{f:56};
+    let mut s3 = S3 { f: &amp;s1};
+    s3.f = &amp;s1;     // legal - s3 is mutable
+    // s3.f.f = 45; // illegal - s3.f is immutable
+}
+</code></pre></pre>
+<p>(The <code>'a</code> parameter on <code>S2</code> and <code>S3</code> is a lifetime parameter, we'll cover those soon).</p>
+<p>Sometimes whilst an object is logically immutable, it has parts which need to be
+internally mutable. Think of various kinds of caching or a reference count
+(which would not give true logical immutability since the effect of changing the
+ref count can be observed via destructors). In C++, you would use the <code>mutable</code>
+keyword to allow such mutation even when the object is const. In Rust we have
+the Cell and RefCell structs. These allow parts of immutable objects to be
+mutated. Whilst that is useful, it means you need to be aware that when you see
+an immutable object in Rust, it is possible that some parts may actually be
+mutable.</p>
+<p>RefCell and Cell let you get around Rust's strict rules on mutation and
+aliasability. They are safe to use because they ensure that Rust's invariants
+are respected dynamically, even though the compiler cannot ensure that those
+invariants hold statically. Cell and RefCell are both single threaded objects.</p>
+<p>Use Cell for types which have copy semantics (pretty much just primitive types).
+Cell has <code>get</code> and <code>set</code> methods for changing the stored value, and a <code>new</code>
+method to initialise the cell with a value. Cell is a very simple object - it
+doesn't need to do anything smart since objects with copy semantics can't keep
+references elsewhere (in Rust) and they can't be shared across threads, so there
+is not much to go wrong.</p>
+<p>Use RefCell for types which have move semantics, that means nearly everything in
+Rust, struct objects are a common example. RefCell is also created using <code>new</code>
+and has a <code>set</code> method. To get the value in a RefCell, you must borrow it using
+the borrow methods (<code>borrow</code>, <code>borrow_mut</code>, <code>try_borrow</code>, <code>try_borrow_mut</code>)
+these will give you a borrowed reference to the object in the RefCell. These
+methods follow the same rules as static borrowing - you can only have one
+mutable borrow, and can't borrow mutably and immutably at the same time.
+However, rather than a compile error you get a runtime failure. The <code>try_</code>
+variants return an Option - you get <code>Some(val)</code> if the value can be borrowed and
+<code>None</code> if it can't. If a value is borrowed, calling <code>set</code> will fail too.</p>
+<p>Here's an example using a ref-counted pointer to a RefCell (a common use-case):</p>
+<pre><pre class="playground"><code class="language-rust">use std::rc::Rc;
+use std::cell::RefCell;
+
+struct S {
+    field: i32
+}
+
+fn foo(x: Rc&lt;RefCell&lt;S&gt;&gt;) {
+    {
+        let s = x.borrow();
+        println!(&quot;the field, twice {} {}&quot;, s.field, x.borrow().field);
+        // let s = x.borrow_mut(); // Error - we've already borrowed the contents of x
+    }
+
+    let mut s = x.borrow_mut(); // OK, the earlier borrows are out of scope
+    s.field = 45;
+    // println!(&quot;The field {}&quot;, x.borrow().field); // Error - can't mut and immut borrow
+    println!(&quot;The field {}&quot;, s.field);
+}
+
+fn main() {
+    let s = S{field:12};
+    let x: Rc&lt;RefCell&lt;S&gt;&gt; = Rc::new(RefCell::new(s));
+    foo(x.clone());
+
+    println!(&quot;The field {}&quot;, x.borrow().field);
+}
+</code></pre></pre>
+<p>If you're using Cell/RefCell, you should try to put them on the smallest object
+you can. That is, prefer to put them on a few fields of a struct, rather than
+the whole struct. Think of them like single threaded locks, finer grained
+locking is better since you are more likely to avoid colliding on a lock.</p>
+<h5 id="1"><a class="header" href="#1">1</a></h5>
+<p>In C++17 there is <code>std::variant&lt;T&gt;</code> type that is closer to Rust enums than unions.</p>
+<h5 id="2"><a class="header" href="#2">2</a></h5>
+<p>Since C++17 <code>std::optional&lt;T&gt;</code> is the best alternative of Option in Rust.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="rc-raw.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="destructuring.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="rc-raw.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="destructuring.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

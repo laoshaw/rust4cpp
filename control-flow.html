@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>control flow - Rust for CPP Programmers</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded "><a href="hello-world.html"><strong aria-hidden="true">1.</strong> hello world</a></li><li class="chapter-item expanded "><a href="control-flow.html" class="active"><strong aria-hidden="true">2.</strong> control flow</a></li><li class="chapter-item expanded "><a href="primitives.html"><strong aria-hidden="true">3.</strong> primitive types</a></li><li class="chapter-item expanded "><a href="unique.html"><strong aria-hidden="true">4.</strong> unique pointers</a></li><li class="chapter-item expanded "><a href="borrowed.html"><strong aria-hidden="true">5.</strong> borrowed pointers</a></li><li class="chapter-item expanded "><a href="rc-raw.html"><strong aria-hidden="true">6.</strong> rc and raw pointers</a></li><li class="chapter-item expanded "><a href="data-types.html"><strong aria-hidden="true">7.</strong> data types</a></li><li class="chapter-item expanded "><a href="destructuring.html"><strong aria-hidden="true">8.</strong> destructuring 1</a></li><li class="chapter-item expanded "><a href="destructuring-2.html"><strong aria-hidden="true">9.</strong> destructuring 2</a></li><li class="chapter-item expanded "><a href="arrays.html"><strong aria-hidden="true">10.</strong> arrays and vecs</a></li><li class="chapter-item expanded "><a href="graphs/index.html"><strong aria-hidden="true">11.</strong> graphs and arena_allocation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="graphs/src/mod.rs.html"><strong aria-hidden="true">11.1.</strong> mod</a></li><li class="chapter-item expanded "><a href="graphs/src/rc_graph.rs.html"><strong aria-hidden="true">11.2.</strong> rc_graph</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph_generic_mod.rs.html"><strong aria-hidden="true">11.3.</strong> ref_graph_generic_mod</a></li><li class="chapter-item expanded "><a href="graphs/src/ref_graph.rs.html"><strong aria-hidden="true">11.4.</strong> ref_graph</a></li></ol></li><li class="chapter-item expanded "><a href="closures.html"><strong aria-hidden="true">12.</strong> closures and first-class functions</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust for CPP Programmers</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="control-flow"><a class="header" href="#control-flow">Control flow</a></h1>
+<h2 id="if"><a class="header" href="#if">If</a></h2>
+<p>The <code>if</code> statement is pretty much the same in Rust as C++. One difference is
+that the braces are mandatory, but parentheses around the expression being tested
+are not. Another is that <code>if</code> is an expression, so you can use it the same way
+as the ternary <code>?:</code> operator in C++ (remember from the previous section that if the last
+expression in a block is not terminated by a semi-colon, then it becomes the
+value of the block). There is no ternary <code>?:</code> in Rust. So, the following two
+functions do the same thing:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo(x: i32) -&gt; &amp;'static str {
+    let result: &amp;'static str;
+    if x &lt; 10 {
+        result = &quot;less than 10&quot;;
+    } else {
+        result = &quot;10 or more&quot;;
+    }
+    return result;
+}
+
+fn bar(x: i32) -&gt; &amp;'static str {
+    if x &lt; 10 {
+        &quot;less than 10&quot;
+    } else {
+        &quot;10 or more&quot;
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>(Why not <code>mut result</code>? The code in <code>foo</code> makes <code>result</code> immutable, it's just initialized in two possible places. Rust can see that by the time of <code>return result</code>, it is guaranteed to have been initialized.)</p>
+<p>The first is a fairly literal translation of what you might write in C++. The
+second is better Rust style.</p>
+<p>You can also write <code>let x = if ...</code>, etc.</p>
+<h2 id="loops"><a class="header" href="#loops">Loops</a></h2>
+<p>Rust has while loops, again just like C++:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    let mut x = 10;
+    while x &gt; 0 {
+        println!(&quot;Current value: {}&quot;, x);
+        x -= 1;
+    }
+}
+</code></pre></pre>
+<p>There is no <code>do...while</code> loop in Rust, but there is the <code>loop</code> statement which
+just loops forever:</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    loop {
+        println!(&quot;Just looping&quot;);
+    }
+}
+</code></pre></pre>
+<p>Rust has <code>break</code> and <code>continue</code> just like C++.</p>
+<h2 id="for-loops"><a class="header" href="#for-loops">For loops</a></h2>
+<p>Rust also has <code>for</code> loops, but these are a bit different. Lets say you have a
+vector of integers and you want to print them all (we'll cover vectors/arrays,
+iterators, and generics in more detail in the future. For now, know that a
+<code>Vec&lt;T&gt;</code> is a sequence of <code>T</code>s and <code>iter()</code> returns an iterator from anything
+you might reasonably want to iterate over). A simple <code>for</code> loop would look like:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_all(all: Vec&lt;i32&gt;) {
+    for a in all.iter() {
+        println!(&quot;{}&quot;, a);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>TODO also &amp;all/all instead of all.iter()</p>
+<p>If we want to index over the indices of <code>all</code> (a bit more like a standard C++
+for loop over an array), you could do</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_all(all: Vec&lt;i32&gt;) {
+    for i in 0..all.len() {
+        println!(&quot;{}: {}&quot;, i, all[i]);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Hopefully, it is obvious what the <code>len</code> function does. TODO range notation</p>
+<p>A more Rust-like equivalent of the preceding example would be to use an
+enumerating iterator:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_all(all: Vec&lt;i32&gt;) {
+    for (i, a) in all.iter().enumerate() {
+        println!(&quot;{}: {}&quot;, i, a);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Where <code>enumerate()</code> chains from the iterator <code>iter()</code> and yields the current
+count and the element during iteration.</p>
+<p><em>The following example incorporates more advanced topics covered in the section
+on <a href="borrowed.html">Borrowed Pointers</a>.</em> Let's say you have a vector of integers
+and want to call the function, passing the vector by reference and have the
+vector modified in place. Here the <code>for</code> loop uses a mutable iterator which
+gives mutable refererences - the <code>*</code> dereferencing should be familiar to C++
+programmers:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn double_all(all: &amp;mut Vec&lt;i32&gt;) {
+    for a in all.iter_mut() {
+        *a += *a;
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="switchmatch"><a class="header" href="#switchmatch">Switch/Match</a></h2>
+<p>Rust has a match expression which is similar to a C++ switch statement, but much
+more powerful. This simple version should look pretty familiar:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_some(x: i32) {
+    match x {
+        0 =&gt; println!(&quot;x is zero&quot;),
+        1 =&gt; println!(&quot;x is one&quot;),
+        10 =&gt; println!(&quot;x is ten&quot;),
+        y =&gt; println!(&quot;x is something else {}&quot;, y),
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>There are some syntactic differences - we use <code>=&gt;</code> to go from the matched value
+to the expression to execute, and the match arms are separated by <code>,</code> (that last
+<code>,</code> is optional). There are also some semantic differences which are not so
+obvious: the matched patterns must be exhaustive, that is all possible values of
+the matched expression (<code>x</code> in the above example) must be covered. Try removing
+the <code>y =&gt; ...</code> line and see what happens; that is because we only have matches
+for 0, 1, and 10, but there are obviously lots of other integers which don't get
+matched. In that last arm, <code>y</code> is bound to the value being matched (<code>x</code> in this
+case). We could also write:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_some(x: i32) {
+    match x {
+        x =&gt; println!(&quot;x is something else {}&quot;, x)
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Here the <code>x</code> in the match arm introduces a new variable which hides the argument
+<code>x</code>, just like declaring a variable in an inner scope.</p>
+<p>If we don't want to name the variable, we can use <code>_</code> for an unnamed variable,
+which is like having a wildcard match. If we don't want to do anything, we can
+provide an empty branch:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_some(x: i32) {
+    match x {
+        0 =&gt; println!(&quot;x is zero&quot;),
+        1 =&gt; println!(&quot;x is one&quot;),
+        10 =&gt; println!(&quot;x is ten&quot;),
+        _ =&gt; {}
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Another semantic difference is that there is no fall through from one arm to the
+next so it works like <code>if...else if...else</code>.</p>
+<p>We'll see in later posts that match is extremely powerful. For now I want to
+introduce just a couple more features - the 'or' operator for values and <code>if</code>
+clauses on arms. Hopefully an example is self-explanatory:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_some_more(x: i32) {
+    match x {
+        0 | 1 | 10 =&gt; println!(&quot;x is one of zero, one, or ten&quot;),
+        y if y &lt; 20 =&gt; println!(&quot;x is less than 20, but not zero, one, or ten&quot;),
+        y if y == 200 =&gt; println!(&quot;x is 200 (but this is not very stylish)&quot;),
+        _ =&gt; {}
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Just like <code>if</code> expressions, <code>match</code> statements are actually expressions so we
+could re-write the last example as:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn print_some_more(x: i32) {
+    let msg = match x {
+        0 | 1 | 10 =&gt; &quot;one of zero, one, or ten&quot;,
+        y if y &lt; 20 =&gt; &quot;less than 20, but not zero, one, or ten&quot;,
+        y if y == 200 =&gt; &quot;200 (but this is not very stylish)&quot;,
+        _ =&gt; &quot;something else&quot;
+    };
+
+    println!(&quot;x is {}&quot;, msg);
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Note the semi-colon after the closing brace, that is because the <code>let</code> statement
+is a statement and must take the form <code>let msg = ...;</code>. We fill the rhs with a
+match expression (which doesn't usually need a semi-colon), but the <code>let</code>
+statement does. This catches me out all the time.</p>
+<p>Motivation: Rust match statements avoid the common bugs with C++ switch
+statements - you can't forget a <code>break</code> and unintentionally fall through; if you
+add a case to an enum (more later on) the compiler will make sure it is covered
+by your <code>match</code> statement.</p>
+<h2 id="method-call"><a class="header" href="#method-call">Method call</a></h2>
+<p>Finally, just a quick note that methods exist in Rust, similarly to C++. They
+are always called via the <code>.</code> operator (no <code>-&gt;</code>, more on this in another post).
+We saw a few examples above (<code>len</code>, <code>iter</code>). We'll go into more detail in the
+future about how they are defined and called. Most assumptions you might make
+from C++ or Java are probably correct.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="hello-world.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="primitives.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="hello-world.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="primitives.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
